@@ -17,6 +17,7 @@ import com.hashedin.hashedinbank.services.impl.UserDetailsImpl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Set;
 
 public class ConstructTestObjectUtil {
@@ -100,8 +101,35 @@ public class ConstructTestObjectUtil {
                 .build();
     }
 
+    public static UserRegistrationDto constructUserRegistrationDto_InvalidRole() {
+        return UserRegistrationDto.builder()
+                .companyId(1)
+                .firstName("iram")
+                .lastName("guranni")
+                .phoneNo("9035959092")
+                .email("iram@walmart.com")
+                .password("test@123")
+                .roles(Set.of(""))
+                .remarks("test")
+                .build();
+    }
+
+    public static UserRegistrationDto constructUserRegistrationDto_AdminRole() {
+        return UserRegistrationDto.builder()
+                .companyId(1)
+                .firstName("iram")
+                .lastName("guranni")
+                .phoneNo("9035959092")
+                .email("iram@walmart.com")
+                .password("test@123")
+                .roles(Set.of("ROLE_PROGRAM_ADMIN"))
+                .remarks("test")
+                .build();
+    }
+
     public static UserUpdateDto constructUserUpdateDto() {
         return UserUpdateDto.builder()
+                .userId(1L)
                 .firstName("iram")
                 .lastName("guranni")
                 .phoneNo("9035959092")

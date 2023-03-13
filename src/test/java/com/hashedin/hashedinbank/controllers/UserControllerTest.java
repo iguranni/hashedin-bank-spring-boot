@@ -101,7 +101,7 @@ public class UserControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully updated user details with HashedIn Bank for user id : null")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully updated user details with HashedIn Bank for user id : 1")));
     }
 
     @Test

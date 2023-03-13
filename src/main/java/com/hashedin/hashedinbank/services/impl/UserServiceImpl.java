@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-
     @Override
     @Transactional
     public User createUser(UserRegistrationDto userRegistrationDto) {
