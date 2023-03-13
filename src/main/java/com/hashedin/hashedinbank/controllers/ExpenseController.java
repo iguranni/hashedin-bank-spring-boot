@@ -49,9 +49,8 @@ public class ExpenseController {
     }
 
     @PostMapping("/monthly-expense/scheduler")
-    public ResponseEntity<ApiResponse<String>> manualTriggerForScheduler(@RequestHeader("Authorization") String bearerToken) throws Exception {
+    public ResponseEntity<ApiResponse<String>> manualTriggerForScheduler() throws Exception {
         log.info("Inside ExpenseController_manualTriggerForScheduler..");
-        String email = jwtUtils.getUsernameFromToken(bearerToken);
         jobScheduler.monthlyExpenseSheetScheduler();
         log.info("Exiting ExpenseController_manualTriggerForScheduler..");
         return new ResponseEntity<>(new ApiResponse<>("Successfully generated monthly expense file", null, null), HttpStatus.CREATED);

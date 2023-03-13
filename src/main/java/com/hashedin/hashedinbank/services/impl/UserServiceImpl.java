@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
     private final CompanyRepository companyRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired

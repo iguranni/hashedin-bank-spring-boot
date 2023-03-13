@@ -44,7 +44,7 @@ public class UserController {
 
     @PutMapping("/approve")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','PROGRAM_ADMIN')")
-    public ResponseEntity<ApiResponse<User>> approveUser(@RequestParam String email) {
+    public ResponseEntity<ApiResponse<String>> approveUser(@RequestParam String email) {
         log.info("Inside UserController_approveUser..");
         userService.approveUser(email);
         log.info("Exiting UserController_approveUser..");

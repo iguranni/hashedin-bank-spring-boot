@@ -7,15 +7,15 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.hashedin.hashedinbank.dto.request.CompanyRegistrationDto;
-import com.hashedin.hashedinbank.dto.request.CompanyUpdateDto;
-import com.hashedin.hashedinbank.dto.request.UserRegistrationDto;
-import com.hashedin.hashedinbank.dto.request.UserUpdateDto;
+import com.hashedin.hashedinbank.dto.request.*;
 import com.hashedin.hashedinbank.entities.Company;
+import com.hashedin.hashedinbank.entities.CreditCard;
 import com.hashedin.hashedinbank.entities.Role;
 import com.hashedin.hashedinbank.entities.User;
 import com.hashedin.hashedinbank.enums.ERole;
+import com.hashedin.hashedinbank.services.impl.UserDetailsImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -74,6 +74,7 @@ public class ConstructTestObjectUtil {
 
     public static User constructUser() {
         return User.builder()
+                .userId(1L)
                 .firstName("iram")
                 .lastName("guranni")
                 .phoneNo("9035959092")
@@ -108,5 +109,27 @@ public class ConstructTestObjectUtil {
                 .roles(Set.of("ROLE_PROGRAM_ADMIN"))
                 .remarks("testing update scenario")
                 .build();
+    }
+
+    public static CreditCard constructCreditCard() {
+        return CreditCard
+                .builder()
+                .creditCardId(1L)
+                .creditCardNumber("1234567891011121")
+                .cardHolderId(constructUser())
+                .issuedDate(LocalDate.of(2022, 12, 31))
+                .expiredDate(LocalDate.of(2023,12,31))
+                .build();
+    }
+
+    public static LoginRequestDto constructLoginRequestDto() {
+        return LoginRequestDto.builder()
+                .username("test@gmail.com")
+                .password("test@123")
+                .build();
+    }
+
+    public static UserDetailsImpl constructUserDetails() {
+        return UserDetailsImpl.build(constructUser());
     }
 }

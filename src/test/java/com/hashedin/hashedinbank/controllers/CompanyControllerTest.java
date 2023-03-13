@@ -54,49 +54,51 @@ class CompanyControllerTest {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully registered company with HashedIn Bank for company code : ")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resultCount", is(1)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully registered company with HashedIn Bank for company code : DEL002")));
 
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(username = "admin@gmail.com", roles = "PROGRAM_ADMIN")
     void deleteCompanyTest() throws Exception {
         doNothing().when(companyService).expireCompany(anyInt());
-        mockMvc.perform(MockMvcRequestBuilders.delete("/company/delete"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/company/delete")
+                        .with(csrf())
+                        .param("companyId", String.valueOf(1))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andDo(print())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully deleted company from HashedIn Bank for company id : ")));
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully deleted company from HashedIn Bank for company id : 1")));
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(username = "admin@gmail.com", roles = "PROGRAM_ADMIN")
     void updateCompanyTest() throws Exception {
         Mockito.when(companyService.updateCompany(any(CompanyUpdateDto.class))).thenReturn(ConstructTestObjectUtil.constructCompany());
-        mockMvc.perform(MockMvcRequestBuilders.post("/company/update")
-                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(ConstructTestObjectUtil.constructCompanyUpdateDto())))
+        mockMvc.perform(MockMvcRequestBuilders.put("/company/update")
+                        .with(csrf())
+                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(ConstructTestObjectUtil.constructCompanyUpdateDto()))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully updated company details with HashedIn Bank for company id : ")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resultCount", is(1)));
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", is("Successfully updated company details with HashedIn Bank for company id : 1")));
     }
 
     @Test
-    @WithMockUser(roles = "USER")
-    void findAllCompaniesTest() throws Exception {
+    @WithMockUser(username = "admin@gmail.com", roles = "PROGRAM_ADMIN")
+    void findAllUsersByCompanyTest() throws Exception {
         List<Company> expectedCompanies = List.of(ConstructTestObjectUtil.constructCompany());
 
         Mockito.when(companyService.getAllCompanies()).thenReturn(expectedCompanies);
-        mockMvc.perform(MockMvcRequestBuilders.get("/company/all"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/company/all")
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType("application/json"))
